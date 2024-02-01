@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://sn8x5h7chu3v"]
+
+[ext_resource type="Texture2D" uid="uid://baaol264nw0su" path="res://Graphical Assets/environment/Background/back.png" id="1_hs33s"]
+
+[sub_resource type="GDScript" id="GDScript_coxe0"]
+script/source = "extends Button
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+
+
+
+
+func _on_button_up():
+	get_tree().change_scene_to_file(\"res://world.tscn\")
+"
+
+[node name="GameOver" type="Node2D"]
+
+[node name="Back" type="Sprite2D" parent="."]
+position = Vector2(576, 324)
+scale = Vector2(3, 2.7)
+texture = ExtResource("1_hs33s")
+
+[node name="GameOver" type="Label" parent="."]
+offset_top = 192.0
+offset_right = 1152.0
+offset_bottom = 215.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Game Over"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TryAgain" type="Button" parent="."]
+offset_left = 448.0
+offset_top = 304.0
+offset_right = 704.0
+offset_bottom = 464.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Try Again"
+script = SubResource("GDScript_coxe0")
+
+[connection signal="button_up" from="TryAgain" to="TryAgain" method="_on_button_up"]

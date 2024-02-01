@@ -1,0 +1,127 @@
+[gd_scene load_steps=18 format=3 uid="uid://cjbm2qpch0h11"]
+
+[ext_resource type="Script" path="res://possum.gd" id="1_snhvo"]
+[ext_resource type="Texture2D" uid="uid://b1dt7ffptrni1" path="res://Graphical Assets/sprites/enemy-death/enemy-death-1.png" id="2_7oqcw"]
+[ext_resource type="Texture2D" uid="uid://byoi84r1b1hp3" path="res://Graphical Assets/sprites/enemy-death/enemy-death-2.png" id="3_tunsr"]
+[ext_resource type="Texture2D" uid="uid://dh8yq1o4f4e6p" path="res://Graphical Assets/sprites/enemy-death/enemy-death-3.png" id="4_01nxa"]
+[ext_resource type="Texture2D" uid="uid://b678e3nlnmmhx" path="res://Graphical Assets/sprites/enemy-death/enemy-death-4.png" id="5_syqda"]
+[ext_resource type="Texture2D" uid="uid://dmfa414wwshnm" path="res://Graphical Assets/sprites/enemy-death/enemy-death-5.png" id="6_6fih7"]
+[ext_resource type="Texture2D" uid="uid://bc2gl8uofpi08" path="res://Graphical Assets/sprites/enemy-death/enemy-death-6.png" id="7_m7owu"]
+[ext_resource type="Texture2D" uid="uid://pw1aswiprjge" path="res://Graphical Assets/sprites/opossum/opossum-1.png" id="8_62oxb"]
+[ext_resource type="Texture2D" uid="uid://dwt5xhqq0vr0m" path="res://Graphical Assets/sprites/opossum/opossum-2.png" id="9_hbjr4"]
+[ext_resource type="Texture2D" uid="uid://cmsbvjeolkjg7" path="res://Graphical Assets/sprites/opossum/opossum-3.png" id="10_6bq4k"]
+[ext_resource type="Texture2D" uid="uid://b258u5qi6mq2q" path="res://Graphical Assets/sprites/opossum/opossum-4.png" id="11_dls4e"]
+[ext_resource type="Texture2D" uid="uid://dnif32hwjiuga" path="res://Graphical Assets/sprites/opossum/opossum-5.png" id="12_1o6wu"]
+[ext_resource type="Texture2D" uid="uid://dilugpn8y07ea" path="res://Graphical Assets/sprites/opossum/opossum-6.png" id="13_46ks2"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aiydb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_7oqcw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tunsr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_01nxa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_syqda")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_6fih7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_m7owu")
+}],
+"loop": false,
+"name": &"Death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_62oxb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_hbjr4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_1o6wu")
+}],
+"loop": true,
+"name": &"Lunge",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_62oxb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_hbjr4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_6bq4k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_dls4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_1o6wu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_46ks2")
+}],
+"loop": true,
+"name": &"Move",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_raukb"]
+size = Vector2(100, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ttlkx"]
+size = Vector2(104, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mscw5"]
+size = Vector2(118, 68)
+
+[node name="Possum" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_snhvo")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-7.5, -8.5)
+scale = Vector2(4.02778, 3.96429)
+sprite_frames = SubResource("SpriteFrames_aiydb")
+animation = &"Lunge"
+autoplay = "Move"
+flip_h = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-10, 16)
+shape = SubResource("RectangleShape2D_raukb")
+
+[node name="HurtBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(-12, 2)
+shape = SubResource("RectangleShape2D_ttlkx")
+
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(-11, 10)
+shape = SubResource("RectangleShape2D_mscw5")
+
+[node name="lungeTime" type="Timer" parent="."]
+
+[node name="breakTime" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
+[connection signal="timeout" from="lungeTime" to="." method="_on_lunge_time_timeout"]
+[connection signal="timeout" from="breakTime" to="." method="_on_break_time_timeout"]
